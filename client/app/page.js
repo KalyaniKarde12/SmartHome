@@ -16,6 +16,8 @@ import Image from "next/image"
 
 import { accommodationsData } from "@/lib/data"
 import { AccommodationCard } from "@/components/AccommodationCard"
+import { useRouter } from "next/navigation"
+
 
 export default function HomePage() {
   const [date, setDate] = useState({
@@ -24,6 +26,7 @@ export default function HomePage() {
   })
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [selectedAccommodation, setSelectedAccommodation] = useState(null)
+  const router = useRouter()
 
   const handleBooking = (accommodationId) => {
     setSelectedAccommodation(accommodationId)
