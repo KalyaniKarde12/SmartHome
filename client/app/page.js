@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -17,8 +17,7 @@ import Image from "next/image"
 import { accommodationsData } from "@/lib/data"
 import { AccommodationCard } from "@/components/AccommodationCard"
 import { useRouter } from "next/navigation"
-
-
+import {getAllAccommodations} from "../../server/actions/dbactions.js"
 export default function HomePage() {
   const [date, setDate] = useState({
     from: undefined,
@@ -38,52 +37,22 @@ export default function HomePage() {
     // In a real app, you would update this in your state management or database
   }
 
+  useEffect(() => {
+    const fetchAccommodations = async () => {
+      try {
+        const data = await getAllAccommodations();
+        console.log("data:", data);
+      } catch (error) {
+        console.error("Error fetching accommodations:", error);
+      }
+    };
+
+    fetchAccommodations();
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-sky-50 to-indigo-50 text-slate-800 w-full overflow-x-hidden">
       {/* Navbar */}
-      <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm">
-        <div className="container mx-auto px-4 flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Building className="h-6 w-6 text-indigo-600" />
-            <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
-              AccommoFind
-            </span>
-          </div>
-
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="#" className="text-sm font-medium transition-colors hover:text-indigo-600">
-              Home
-            </Link>
-            <Link href="#" className="text-sm font-medium transition-colors hover:text-indigo-600">
-              Listings
-            </Link>
-            <Link href="#" className="text-sm font-medium transition-colors hover:text-indigo-600">
-              How it works
-            </Link>
-            <Link href="#" className="text-sm font-medium transition-colors hover:text-indigo-600">
-              About
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowLoginModal(true)}
-              className="text-slate-700 hover:text-indigo-600 hover:bg-indigo-50"
-            >
-              Sign in
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => setShowLoginModal(true)}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white"
-            >
-              Sign up
-            </Button>
-          </div>
-        </div>
-      </header>
 
       <main className="flex-1">
         {/* Hero Section */}

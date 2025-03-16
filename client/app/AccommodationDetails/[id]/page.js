@@ -102,20 +102,7 @@ export default function AccommodationDetails() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Navigation */}
-      <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm">
-        <div className="container mx-auto px-6 flex h-16 items-center">
-          <div className="mr-4 flex">
-            <a className="mr-6 flex items-center space-x-2" href="/">
-            <Building className="h-6 w-6 text-indigo-600" />
-              <span className="font-bold text-2xl bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">AccommoFind</span>
-            </a>
-          </div>
-          <div className="flex flex-1 items-center justify-end space-x-4">
-            <Button variant="ghost" className="text-slate-600 hover:text-teal-600 hover:bg-teal-50">Sign In</Button>
-            <Button className="bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700 text-white shadow-md">Sign Up</Button>
-          </div>
-        </div>
-      </header>
+      
 
       <main className="container mx-auto px-6 py-12">
         {/* Property Header */}
