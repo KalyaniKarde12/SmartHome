@@ -17,7 +17,8 @@ import Image from "next/image"
 import { accommodationsData } from "@/lib/data"
 import { AccommodationCard } from "@/components/AccommodationCard"
 import { useRouter } from "next/navigation"
-import {getAllAccommodations} from "../../server/actions/dbactions.js"
+import { getAccommodationById, getAccommodations } from "@/lib/actions/dbActions"
+import Footer from "@/components/footer"
 export default function HomePage() {
   const [date, setDate] = useState({
     from: undefined,
@@ -26,6 +27,7 @@ export default function HomePage() {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [selectedAccommodation, setSelectedAccommodation] = useState(null)
   const router = useRouter()
+  const [accommodations, setAccommodations] = useState([])
 
   const handleBooking = (accommodationId) => {
     setSelectedAccommodation(accommodationId)
@@ -40,16 +42,15 @@ export default function HomePage() {
   useEffect(() => {
     const fetchAccommodations = async () => {
       try {
-        const data = await getAllAccommodations();
-        console.log("data:", data);
+        const data = await getAccommodations();
+        setAccommodations(data); 
       } catch (error) {
         console.error("Error fetching accommodations:", error);
       }
-    };
-
-    fetchAccommodations();
+    }; fetchAccommodations();
   }, []);
 
+  console.log("accommodations:", accommodations);
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-sky-50 to-indigo-50 text-slate-800 w-full overflow-x-hidden">
       {/* Navbar */}
@@ -381,9 +382,9 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {accommodationsData.map((accommodation) => (
+            {accommodations.map((accommodation) => (
               <AccommodationCard
-                key={accommodation.id}
+                key={accommodation._id}
                 accommodation={accommodation}
                 onBooking={handleBooking}
                 onFavorite={handleFavorite}
@@ -530,92 +531,7 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t bg-white">
-        <div className="container py-8 md:py-12 mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 ">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Building className="h-6 w-6 text-indigo-600" />
-                <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
-                  AccommoFind
-                </span>
-              </div>
-              <p className="text-sm text-slate-600 mb-4">Finding your perfect accommodation made simple.</p>
-              <div className="flex gap-4">{/* Social media icons would go here */}</div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4 text-slate-800">Company</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="#" className="text-slate-600 hover:text-indigo-600 transition-colors">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-slate-600 hover:text-indigo-600 transition-colors">
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-slate-600 hover:text-indigo-600 transition-colors">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-slate-600 hover:text-indigo-600 transition-colors">
-                    Press
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4 text-slate-800">Support</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="#" className="text-slate-600 hover:text-indigo-600 transition-colors">
-                    Help Center
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-slate-600 hover:text-indigo-600 transition-colors">
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-slate-600 hover:text-indigo-600 transition-colors">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-slate-600 hover:text-indigo-600 transition-colors">
-                    Terms of Service
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4 text-slate-800">Subscribe</h3>
-              <p className="text-sm text-slate-600 mb-4">Get the latest deals and updates.</p>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Your email"
-                  className="h-9 border-slate-200 focus:border-indigo-300 focus:ring-indigo-200"
-                />
-                <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                  Subscribe
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t mt-8 pt-8 text-center text-sm text-slate-500">
-            <p>© {new Date().getFullYear()} AccommoFind. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
 
       {/* Login/Signup Modal */}
       <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
