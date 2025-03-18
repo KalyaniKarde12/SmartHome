@@ -2,15 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Slider } from "@/components/ui/slider"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building, CalendarIcon, ChevronDown, HomeIcon, Hotel, MapPin, Search, Star, Users } from "lucide-react"
-import { format } from "date-fns"
+import { Building, HomeIcon, Hotel, Star, Users } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -19,11 +14,8 @@ import { AccommodationCard } from "@/components/AccommodationCard"
 import { useRouter } from "next/navigation"
 import { getAccommodationById, getAccommodations } from "@/lib/actions/dbActions"
 import Footer from "@/components/footer"
+
 export default function HomePage() {
-  const [date, setDate] = useState({
-    from: undefined,
-    to: undefined,
-  })
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [selectedAccommodation, setSelectedAccommodation] = useState(null)
   const router = useRouter()
@@ -82,293 +74,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Search Section */}
-        <section className="container mx-auto px-4 relative -mt-24 z-30">
-          <Card className="shadow-lg border-0 rounded-xl overflow-hidden">
-            <CardContent className="p-6">
-              <Tabs defaultValue="all" className="w-full">
-                <TabsList className="mb-6 grid w-full grid-cols-3 bg-slate-100 p-1">
-                  <TabsTrigger
-                    value="all"
-                    className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-indigo-600"
-                  >
-                    <Building className="h-4 w-4" />
-                    <span>All</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="hotels"
-                    className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-indigo-600"
-                  >
-                    <Hotel className="h-4 w-4" />
-                    <span>Hotels</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="homes"
-                    className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-indigo-600"
-                  >
-                    <HomeIcon className="h-4 w-4" />
-                    <span>Homes</span>
-                  </TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="all" className="mt-0">
-                  <div className="grid gap-4 md:grid-cols-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-700">Location</label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                        <Input
-                          placeholder="Where are you going?"
-                          className="pl-9 border-slate-200 focus:border-indigo-300 focus:ring-indigo-200"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-700">Check-in / Check-out</label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start text-left font-normal border-slate-200 hover:bg-slate-50 hover:text-indigo-600"
-                          >
-                            <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
-                            {date.from ? (
-                              date.to ? (
-                                <>
-                                  {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
-                                </>
-                              ) : (
-                                format(date.from, "LLL dd, y")
-                              )
-                            ) : (
-                              <span className="text-slate-500">Select dates</span>
-                            )}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 bg-white" align="start">
-                          <Calendar
-                            mode="range"
-                            selected={date}
-                            onSelect={(range) => setDate(range || { from: undefined, to: undefined })}
-                            initialFocus
-                            className="rounded-md border-slate-200"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-700">Guests</label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-between text-left font-normal border-slate-200 hover:bg-slate-50 hover:text-indigo-600"
-                          >
-                            <div className="flex items-center">
-                              <Users className="mr-2 h-4 w-4 text-slate-400" />
-                              <span className="text-slate-700">2 guests</span>
-                            </div>
-                            <ChevronDown className="h-4 w-4 text-slate-400" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-80 bg-white" align="start">
-                          <div className="grid gap-4 p-2">
-                            <div className="flex items-center justify-between">
-                              <div className="text-sm font-medium text-slate-700">Adults</div>
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  variant="outline"
-                                  size="icon"
-                                  className="h-8 w-8 border-slate-200 text-slate-700"
-                                >
-                                  -
-                                </Button>
-                                <span className="w-8 text-center text-slate-700">2</span>
-                                <Button
-                                  variant="outline"
-                                  size="icon"
-                                  className="h-8 w-8 border-slate-200 text-slate-700"
-                                >
-                                  +
-                                </Button>
-                              </div>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <div className="text-sm font-medium text-slate-700">Children</div>
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  variant="outline"
-                                  size="icon"
-                                  className="h-8 w-8 border-slate-200 text-slate-700"
-                                >
-                                  -
-                                </Button>
-                                <span className="w-8 text-center text-slate-700">0</span>
-                                <Button
-                                  variant="outline"
-                                  size="icon"
-                                  className="h-8 w-8 border-slate-200 text-slate-700"
-                                >
-                                  +
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-
-                    <div className="flex items-end">
-                      <Button className="w-full gap-2 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-lg transition-all">
-                        <Search className="h-4 w-4" />
-                        Search
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-indigo-600"
-                        >
-                          Price Range
-                          <ChevronDown className="ml-2 h-4 w-4 text-slate-400" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80 bg-white">
-                        <div className="space-y-4 p-2">
-                          <h4 className="font-medium text-slate-700">Price per night</h4>
-                          <div className="px-2">
-                            <Slider
-                              defaultValue={[50, 250]}
-                              min={0}
-                              max={500}
-                              step={10}
-                              className="[&>span]:bg-indigo-500"
-                            />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="text-sm text-slate-600">$50</div>
-                            <div className="text-sm text-slate-600">$250</div>
-                          </div>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-indigo-600"
-                        >
-                          Property Type
-                          <ChevronDown className="ml-2 h-4 w-4 text-slate-400" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80 bg-white">
-                        <div className="grid grid-cols-2 gap-2 p-2">
-                          <Button
-                            variant="outline"
-                            className="justify-start border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
-                          >
-                            Hotel
-                          </Button>
-                          <Button
-                            variant="outline"
-                            className="justify-start border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
-                          >
-                            Apartment
-                          </Button>
-                          <Button
-                            variant="outline"
-                            className="justify-start border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
-                          >
-                            Villa
-                          </Button>
-                          <Button
-                            variant="outline"
-                            className="justify-start border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
-                          >
-                            Resort
-                          </Button>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-indigo-600"
-                        >
-                          Amenities
-                          <ChevronDown className="ml-2 h-4 w-4 text-slate-400" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80 bg-white">
-                        <div className="grid grid-cols-2 gap-2 p-2">
-                          <Button
-                            variant="outline"
-                            className="justify-start border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
-                          >
-                            WiFi
-                          </Button>
-                          <Button
-                            variant="outline"
-                            className="justify-start border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
-                          >
-                            Pool
-                          </Button>
-                          <Button
-                            variant="outline"
-                            className="justify-start border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
-                          >
-                            Kitchen
-                          </Button>
-                          <Button
-                            variant="outline"
-                            className="justify-start border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
-                          >
-                            Parking
-                          </Button>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-8 border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-indigo-600"
-                    >
-                      More Filters
-                      <ChevronDown className="ml-2 h-4 w-4 text-slate-400" />
-                    </Button>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="hotels" className="mt-0">
-                  {/* Similar content for hotels tab */}
-                  <div className="grid gap-4 md:grid-cols-4">{/* Hotel specific search fields */}</div>
-                </TabsContent>
-
-                <TabsContent value="homes" className="mt-0">
-                  {/* Similar content for homes tab */}
-                  <div className="grid gap-4 md:grid-cols-4">{/* Homes specific search fields */}</div>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-        </section>
-
         {/* Featured Accommodations */}
-        <section className="container mx-auto px-4 py-16">
+        <section className="container mx-auto px-5 py-7">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
               Featured Accommodations
@@ -561,4 +268,3 @@ export default function HomePage() {
     </div>
   )
 }
-
