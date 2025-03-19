@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { FiSearch, FiUser, FiMapPin, FiCalendar, FiUsers } from 'react-icons/fi';
+import AccommodationTypesDropdown from './AccommodationTypesDropdown';
 
 const Navbar = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -44,12 +45,15 @@ const Navbar = () => {
                   </svg>
                 </Link>
               </div>
+              {/* Add Accommodation Types Dropdown here */}
+              <AccommodationTypesDropdown />
               <Link href="/how-it-works" className="text-gray-500 hover:text-gray-700 px-1 pt-1 font-medium text-sm">
                 How it works
               </Link>
             </nav>
           </div>
 
+          {/* Rest of the Navbar component remains the same */}
           {/* Search Bar */}
           <div className="hidden lg:flex flex-1 max-w-3xl mx-4 justify-center">
             <div className="w-full flex items-center justify-between bg-white border border-gray-300 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200">
