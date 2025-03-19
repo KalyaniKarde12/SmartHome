@@ -12,7 +12,7 @@ import Image from "next/image"
 import { accommodationsData } from "@/lib/data"
 import { AccommodationCard } from "@/components/AccommodationCard"
 import { useRouter } from "next/navigation"
-import { getAccommodationById, getAccommodations } from "@/lib/actions/dbActions"
+import { getAccommodationById, getAccommodations } from "@/lib/actions/accomodationActions"
 import Footer from "@/components/footer"
 
 export default function HomePage() {

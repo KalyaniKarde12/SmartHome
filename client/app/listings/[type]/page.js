@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import Footer from "@/components/footer"
 import ListingsGrid from "@/components/listings-grid"
-import { getListingsByType } from "@/lib/actions/dbActions"
+import { getListingsByType } from "@/lib/actions/accomodationActions"
 
 export async function generateMetadata({ params }) {
   const type = params.type

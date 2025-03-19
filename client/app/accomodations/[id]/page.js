@@ -26,7 +26,7 @@ import {
   Home,
   X,
 } from "lucide-react"
-import { getAccommodationById } from "@/lib/actions/dbActions"
+import { getAccommodationById } from "@/lib/actions/accomodationActions"
 import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
