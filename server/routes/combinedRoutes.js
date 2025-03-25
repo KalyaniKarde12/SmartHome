@@ -1,7 +1,10 @@
 import express from "express";
 import https from "https";
+import { chatController } from "../controllers/chatController.js"; // Import chat controller
 
 const router = express.Router();
+
+router.post("/chat", chatController); // ✅ Add this line
 
 router.get("/combined-travel-data", async (req, res) => {
   try {

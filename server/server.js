@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import accommodationRoutes from "./routes/accommodationRoutes.js";
 import combinedRoutes from "./routes/combinedRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 
+app.use("/api", chatRoutes);
 dotenv.config();
 const app = express();
 

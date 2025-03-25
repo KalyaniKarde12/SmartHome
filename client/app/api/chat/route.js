@@ -1,26 +1,33 @@
-import { NextResponse } from "next/server";
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAI } from "openai";
+import 'dotenv/config';
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // Ensure it's correctly set in .env.local
 });
-const openai = new OpenAIApi(configuration);
 
 export async function POST(req) {
-  const { message } = await req.json();
-  console.log("Received message from frontend:", message);
-
   try {
-    const completion = await openai.createChatCompletion({
+    const { message } = await req.json();
+
+    const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: message }],
     });
 
-    const reply = completion.data.choices[0].message.content;
-    console.log("OpenAI response:", reply);
-    return NextResponse.json({ reply });
+    return new Response(JSON.stringify({ reply: response.choices[0].message.content }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    console.error("OpenAI API error:", error.response?.data || error.message);
-    return NextResponse.json({ reply: "Error connecting to AI 🤖" }, { status: 500 });
+    console.error("OpenAI API error:", error);
+    return new Response(JSON.stringify({ reply: "Error connecting to AI 🤖" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
+}
+
+// ✅ Add this to allow GET requests (fixes 405 error)
+export async function GET() {
+  return new Response("Chat API is working. Use POST method to send messages.", { status: 200 });
 }
